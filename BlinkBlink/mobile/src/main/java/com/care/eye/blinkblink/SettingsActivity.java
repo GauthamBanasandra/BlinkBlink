@@ -14,6 +14,7 @@ import java.util.Calendar;
 
 import Exceptions.InvalidTimeException;
 import UserTime.Time;
+import UserTime.TwentyFourHourClock;
 
 public class SettingsActivity extends AppCompatActivity {
     public static final String SETTINGS_PREF = "SETTINGS_PREF";
@@ -44,7 +45,7 @@ public class SettingsActivity extends AppCompatActivity {
         initButtonClickListener(stopButton, STOP_TIME);
     }
 
-    private void initButtonClickListener(Button button, final String mode) {
+    private void initButtonClickListener(final Button button, final String mode) {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,8 +56,15 @@ public class SettingsActivity extends AppCompatActivity {
                 TimePickerDialog timePickerDialog = new TimePickerDialog(SettingsActivity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        saveSharedPreference(mode, hourOfDay, minute);
-                        Log.d(Activity, "mode:\t" + mode + "\thour:" + hourOfDay + "\tminute:" + minute);
+                        try {
+                            TwentyFourHourClock time = new TwentyFourHourClock(hourOfDay, minute);
+                            saveSharedPreference(mode, time);
+                            Log.d(Activity, "mode:\t" + mode + "\thour:" + hourOfDay + "\tminute:" + minute);
+                            button.setText(time.convertToTwelveHourClock().toString());
+                        } catch (InvalidTimeException e) {
+                            e.printStackTrace();
+                            Toast.makeText(SettingsActivity.this, "Invalid " + mode + " retrieved", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }, hour, minute, false);
                 timePickerDialog.setTitle("Set start time");
@@ -65,14 +73,9 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 
-    private void saveSharedPreference(String mode, int hour, int minute) {
+    private void saveSharedPreference(String mode, TwentyFourHourClock time) {
         SharedPreferences.Editor settingsEditor = settings.edit();
-        try {
-            Time time = new Time(hour, minute);
-            settingsEditor.putString(mode, time.toString());
-        } catch (InvalidTimeException e) {
-            Toast.makeText(this, "Invalid " + mode + " retrieved", Toast.LENGTH_SHORT).show();
-        }
+        settingsEditor.putString(mode, time.toString());
         settingsEditor.apply();
     }
 
@@ -93,8 +96,8 @@ public class SettingsActivity extends AppCompatActivity {
         if (timeStr.equals("")) {
             button.setText("Not set");
         } else {
-            Time time = new Time(timeStr);
-            button.setText(time.toString());
+            TwentyFourHourClock time = new TwentyFourHourClock(timeStr);
+            button.setText(time.convertToTwelveHourClock().toString());
         }
     }
 }
