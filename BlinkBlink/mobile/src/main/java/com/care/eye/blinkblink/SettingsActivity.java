@@ -22,10 +22,6 @@ import UserTime.Time;
 import UserTime.TwentyFourHourClock;
 
 public class SettingsActivity extends AppCompatActivity {
-    public static final String SETTINGS_PREF = "SETTINGS_PREF";
-    public static final String START_TIME = "START_TIME";
-    public static final String STOP_TIME = "STOP_TIME";
-    public static final String BUZZ_INTERVAL = "BUZZ_INTERVAL";
     public static final String Activity = "SettingsActivity";
 
     private Button startButton;
@@ -38,7 +34,7 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        settings = getSharedPreferences(SETTINGS_PREF, 0);
+        settings = getSharedPreferences(Time.SETTINGS_PREF, 0);
 
         startButton = (Button) findViewById(R.id.button_set_start_time);
         stopButton = (Button) findViewById(R.id.button_set_stop_time);
@@ -49,9 +45,9 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void initButtonClickListener() {
-        initButtonClickListener(startButton, START_TIME);
-        initButtonClickListener(stopButton, STOP_TIME);
-        initButtonClickListener(buzzIntervalButton, BUZZ_INTERVAL);
+        initButtonClickListener(startButton, Time.START_TIME);
+        initButtonClickListener(stopButton, Time.STOP_TIME);
+        initButtonClickListener(buzzIntervalButton, Time.BUZZ_INTERVAL);
     }
 
     private void initButtonClickListener(final Button button, final String mode) {
@@ -59,8 +55,8 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 switch (mode) {
-                    case START_TIME:
-                    case STOP_TIME:
+                    case Time.START_TIME:
+                    case Time.STOP_TIME:
                         Calendar currentTime = Calendar.getInstance();
                         int hour = currentTime.get(Calendar.HOUR_OF_DAY);
                         int minute = currentTime.get(Calendar.MINUTE);
@@ -84,7 +80,7 @@ public class SettingsActivity extends AppCompatActivity {
                         timePickerDialog.setTitle("Set start time");
                         timePickerDialog.show();
                         break;
-                    case BUZZ_INTERVAL:
+                    case Time.BUZZ_INTERVAL:
                         LinearLayout linearLayout = new LinearLayout(SettingsActivity.this);
                         LayoutInflater layoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
                         layoutInflater.inflate(R.layout.buzz_interval_dialog, linearLayout);
@@ -130,17 +126,17 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void initButtonText() {
         try {
-            initButtonText(settings.getString(START_TIME, ""), startButton);
+            initButtonText(settings.getString(Time.START_TIME, ""), startButton);
         } catch (InvalidTimeException e) {
             startButton.setText("Invalid start time");
         }
         try {
-            initButtonText(settings.getString(STOP_TIME, ""), stopButton);
+            initButtonText(settings.getString(Time.STOP_TIME, ""), stopButton);
         } catch (InvalidTimeException e) {
             stopButton.setText("Invalid stop time");
         }
 
-        int buzzInterval = settings.getInt(BUZZ_INTERVAL, -1);
+        int buzzInterval = settings.getInt(Time.BUZZ_INTERVAL, -1);
         if (buzzInterval == -1) {
             buzzIntervalButton.setText("Not set");
         } else {

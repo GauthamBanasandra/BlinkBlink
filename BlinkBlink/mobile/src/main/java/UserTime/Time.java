@@ -9,6 +9,11 @@ import Exceptions.InvalidTimeException;
  */
 
 public class Time {
+    public static final String SETTINGS_PREF = "SETTINGS_PREF";
+    public static final String START_TIME = "START_TIME";
+    public static final String STOP_TIME = "STOP_TIME";
+    public static final String BUZZ_INTERVAL = "BUZZ_INTERVAL";
+
     private int hour;
     private int minute;
 
