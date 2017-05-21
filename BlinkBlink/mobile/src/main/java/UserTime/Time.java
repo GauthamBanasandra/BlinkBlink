@@ -66,9 +66,13 @@ public class Time {
         this.minute = minute;
     }
 
+    public static String getMinutesString(int minute) {
+        return String.valueOf(minute) + (minute == 1 ? " minute" : " minutes");
+    }
+
     @Override
     public String toString() {
         DecimalFormat format = new DecimalFormat("00");
-        return format.format(hour)+ ":" + format.format(minute);
+        return format.format(hour) + ":" + format.format(minute);
     }
 }

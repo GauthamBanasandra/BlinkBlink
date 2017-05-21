@@ -1,7 +1,6 @@
 package com.care.eye.blinkblink;
 
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
@@ -20,6 +18,7 @@ import android.widget.Toast;
 import java.util.Calendar;
 
 import Exceptions.InvalidTimeException;
+import UserTime.Time;
 import UserTime.TwentyFourHourClock;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -103,7 +102,7 @@ public class SettingsActivity extends AppCompatActivity {
                                 // TODO :   A keyboard pops up when numberPickerDialog is shown. However, the number that is keyed in isn't captured. Check this.
                                 saveSharedPreference(mode, numberPicker.getValue());
                                 Log.d(Activity, "buzz interval:\t" + numberPicker.getValue());
-                                button.setText(numberPicker.getValue() + " minutes");
+                                button.setText(Time.getMinutesString(numberPicker.getValue()));
                             }
                         });
 
@@ -145,7 +144,7 @@ public class SettingsActivity extends AppCompatActivity {
         if (buzzInterval == -1) {
             buzzIntervalButton.setText("Not set");
         } else {
-            buzzIntervalButton.setText(String.valueOf(buzzInterval) + " minutes");
+            buzzIntervalButton.setText(Time.getMinutesString(buzzInterval));
         }
     }
 
