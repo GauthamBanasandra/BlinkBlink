@@ -34,6 +34,7 @@ public class AlarmDisplayActivity extends AppCompatActivity {
         Log.d(Activity, "start time:" + startTime.toString());
         Log.d(Activity, "stop time:" + stopTime.toString());
 
+
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
         pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, 0);

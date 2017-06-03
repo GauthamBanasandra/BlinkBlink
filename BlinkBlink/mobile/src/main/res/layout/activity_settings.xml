@@ -68,4 +68,11 @@
             android:layout_weight="1"
             android:text="Button" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/button_save_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Button" />
+
 </LinearLayout>
